@@ -52,16 +52,12 @@ class Solution:
             else:
                 return None
         else:
-            last_node = root
             successor = root.right
             while successor.left:
-                last_node = successor
                 successor = successor.left
             root.val = successor.val
-            if last_node != root:
-                last_node.left = successor.right
-            else:
-                last_node.right = successor.right
+            root.right = self.deleteNode(root.right, successor.val)
+            return root
         return origin_root
 
 
@@ -69,7 +65,7 @@ class Solution:
         if not root:
             return None
         origin_root = root
-        last_node = TreeNode(-1)
+        last_node = None
         while root:
             if root.val < key:
                 last_node = root
@@ -78,27 +74,15 @@ class Solution:
                 last_node = root
                 root = root.left
             else:
-                if not root.left or not root.right:
-                    if root.left:
+                if not root.right:
+                    if last_node:
                         if last_node.left == root:
                             last_node.left = root.left
-                        else:
+                        if last_node.right == root:
                             last_node.right = root.left
-                        return origin_root
-                    elif root.right:
-                        if last_node.left == root:
-                            last_node.left = root.right
-                        else:
-                            last_node.right = root.right
-                        return origin_root
                     else:
-                        if last_node is None:
-                            return None
-                        if last_node.left == root:
-                            last_node.left = None
-                        else:
-                            last_node.right = None
-                        return origin_root
+                        origin_root = root.left
+                    return origin_root
                 else:
                     last_node = root
                     successor = root.right
@@ -112,19 +96,18 @@ class Solution:
                         last_node.right = successor.right
                     return origin_root
 
-
         return origin_root
 
 
 if __name__ == '__main__':
     root = TreeNode(5)
     root.left = TreeNode(3)
-    root.left.left = TreeNode(2)
-    root.left.left.left = TreeNode(1)
+    # root.left.left = TreeNode(2)
+    # root.left.left.left = TreeNode(1)
     root.left.right = TreeNode(4)
     root.right = TreeNode(7)
-    # root.right.left = TreeNode(6)
+    root.right.left = TreeNode(6)
     root.right.right = TreeNode(8)
-    res = Solution().deleteNode(root, key=3)
+    res = Solution().deleteNode(root, key=5)
 
     print(res)
