@@ -1,0 +1,62 @@
+"""
+59. 螺旋矩阵 II
+给你一个正整数 n ，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的 n x n 正方形矩阵 matrix 。
+
+示例 1：
+输入：n = 3
+输出：[[1,2,3],[8,9,4],[7,6,5]]
+
+示例 2：
+输入：n = 1
+输出：[[1]]
+
+提示：
+1 <= n <= 20
+
+来源：力扣（LeetCode）
+链接：https://leetcode.cn/problems/spiral-matrix-ii/
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+"""
+
+class Solution:
+    def generateMatrix(self, n: int):
+        res = [[0 for _ in range(n)] for _ in range(n)]
+        now_num = 1
+        i, j = 0, 0
+        top, bottom, left, right = 0, n-1, 0, n-1
+        direct = 'right'
+        while now_num <= n*n:
+            res[i][j] = now_num
+            if direct == 'right':
+                j += 1
+            elif direct == 'down':
+                i += 1
+            elif direct == 'left':
+                j -= 1
+            elif direct == 'up':
+                i -= 1
+
+            if direct == 'right' and j == right:
+                top += 1
+                direct = 'down'
+            elif direct == 'down' and i == bottom:
+                right -= 1
+                direct = 'left'
+            elif direct == 'left' and j == left:
+                bottom -= 1
+                direct = 'up'
+            elif direct == 'up' and i == top:
+                left += 1
+                direct = 'right'
+
+            now_num += 1
+
+        return res
+
+
+if __name__ == '__main__':
+    res = Solution().generateMatrix(4)
+    # print(res)
+    for x in res:
+        print(x)

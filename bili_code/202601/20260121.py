@@ -32,32 +32,35 @@ class ListNode:
 
 class Solution:
     def swapPairs(self, head: ListNode) -> ListNode:
-        if not head:
-            return None
-        l, r = head, head.next
-        if not r:
-            return l
-        last = None
-        res = r
-        while l and r:
-            if last:
-                last.next = r
-            last = l
-            l.next = r.next
-            r.next = l
-            l = l.next
-            if l:
-                r = l.next
-        return res
+        p = head
+        if p is None or p.next is None:
+            return p
+        fake_head = ListNode(-1)
+        fake_head.next = p.next
+        l = fake_head
+
+        while p is not None:
+            q = p.next
+            if q is not None:
+                l.next = q
+                r = q.next
+                q.next = p
+                p.next = r
+            l = p
+            p = p.next
+
+        return fake_head.next
+
+
 
 
 if __name__ == '__main__':
     node = ListNode(1)
-    node.next = ListNode(2)
-    node.next.next = ListNode(3)
-    node.next.next.next = ListNode(4)
+    # node.next = ListNode(2)
+    # node.next.next = ListNode(3)
+    # node.next.next.next = ListNode(4)
+    # node.next.next.next.next = ListNode(5)
     res = Solution().swapPairs(node)
     while res:
         print(res.val)
         res = res.next
-
